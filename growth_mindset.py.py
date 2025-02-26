@@ -1,4 +1,3 @@
-
 import streamlit as st
 import random
 
@@ -39,10 +38,9 @@ if page == "Home":
         else:
             st.warning("Please write something to reflect on your growth journey!")
 
-        # Encouragement Message
-        st.subheader("Remember:")
-        st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
-
+    # Encouragement Message
+    st.subheader("Remember:")
+    st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
 
 # Daily Challenge Page
 elif page == "Daily Challenge":
@@ -91,10 +89,13 @@ elif page == "Motivational Quotes":
         "“The only limit to our realization of tomorrow is our doubts of today.” – Franklin D. Roosevelt",
         "“Difficulties strengthen the mind, as labor does the body.” – Seneca"
     ]
+
     st.write(f"📢 **Quote of the Day:** *{random.choice(quotes)}*")
-     # Encouragement Message
+
+    # Encouragement Message
     st.subheader("Remember:")
     st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
+
 # Footer
 st.sidebar.markdown("---")
 st.sidebar.write("🚀 Keep Growing & Never Stop Learning!")
