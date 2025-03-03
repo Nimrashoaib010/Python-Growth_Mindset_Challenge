@@ -1,12 +1,25 @@
 import streamlit as st
+import pandas as pd
 import random
+import matplotlib.pyplot as plt
 
-# Set page configuration
 st.set_page_config(page_title="Growth Mindset Challenge", page_icon="🌱", layout="wide")
 
 # Navbar (Sidebar)
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Daily Challenge", "Mindset Exercises", "Motivational Quotes"])
+page = st.sidebar.radio("Go to", ["Home", "Daily Challenge", "Mindset Exercises", "Motivational Quotes", "Progress Tracker"])
+
+mode = st.sidebar.radio("Choose Mode", ["Light", "Dark"])
+if mode == "Dark":
+    st.markdown("""
+        <style>
+            .main, body, .stApp { background-color: black !important; color: white !important; }
+            .stSelectbox, .stNumber_input, .stButton, .stInfo { color: white !important; }
+            .css-1d391kg, .css-18e3th9 { background-color: #333 !important; color: white !important; }
+            .sidebar .css-1d391kg, .sidebar .css-18e3th9 { background-color: black !important; color: white !important; }
+            .sidebar { background-color: black !important; color: white !important; }
+        </style>
+    """, unsafe_allow_html=True)
 
 # Home Page
 if page == "Home":
@@ -18,7 +31,6 @@ if page == "Home":
     Let's explore how you can adopt this mindset and improve continuously!
     """)
 
-    # Why Growth Mindset?
     st.subheader("Why Adopt a Growth Mindset?")
     st.markdown("""
     ✅ **Embrace Challenges** – View obstacles as learning opportunities.  
@@ -42,7 +54,6 @@ if page == "Home":
     st.subheader("Remember:")
     st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
 
-# Daily Challenge Page
 elif page == "Daily Challenge":
     st.title("🎯 Daily Growth Mindset Challenge")
 
@@ -61,7 +72,6 @@ elif page == "Daily Challenge":
     st.subheader("Remember:")
     st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
 
-# Mindset Exercises Page
 elif page == "Mindset Exercises":
     st.title("🧠 Growth Mindset Exercises")
 
@@ -74,11 +84,9 @@ elif page == "Mindset Exercises":
     st.subheader("3️⃣ Embrace Constructive Criticism")
     st.write("Listen to feedback and see it as a tool for growth.")
 
-    # Encouragement Message
     st.subheader("Remember:")
     st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
 
-# Motivational Quotes Page
 elif page == "Motivational Quotes":
     st.title("💬 Motivational Quotes")
 
@@ -95,6 +103,34 @@ elif page == "Motivational Quotes":
     # Encouragement Message
     st.subheader("Remember:")
     st.info("Every step you take, forward or backward, is part of learning. Keep striving to be better! 🚀")
+
+elif page == "Progress Tracker":
+    st.title("📊 Progress Tracker")
+
+    uploaded_file = st.file_uploader("Upload your progress file (CSV or Excel)", type=["csv", "xlsx"])
+
+    if uploaded_file is not None:
+        if uploaded_file.name.endswith('.csv'):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+
+        st.write("📋 Data Preview:")
+        st.dataframe(df)
+
+        st.download_button(label="Download Data", data=uploaded_file.getvalue(), file_name=uploaded_file.name)
+
+        # Data visualization
+        st.write("📈 Effort vs. Results")
+        if 'Effort' in df.columns and 'Results' in df.columns:
+            fig, ax = plt.subplots()
+            ax.scatter(df['Effort'], df['Results'], color='green')
+            ax.set_xlabel('Effort')
+            ax.set_ylabel('Results')
+            ax.set_title('Effort vs. Results')
+            st.pyplot(fig)
+        else:
+            st.warning("Make sure your file has 'Effort' and 'Results' columns!")
 
 # Footer
 st.sidebar.markdown("---")
